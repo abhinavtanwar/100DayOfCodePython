@@ -2,7 +2,9 @@
 from tkinter import *
 import time
 import math
+import pygame
 
+pygame.mixer.init()
 PINK = '#e2979c'
 RED = '#e7305b'
 GREEN = '#9bdeac'
@@ -34,7 +36,10 @@ def start_Timer():
     work_secs = WORK_MIN * 60
     short_break_secs = SHORT_BREAK * 60
     long_break_secs = LONG_BREAK * 60
+    
     if reps % 8 == 0:
+        pygame.mixer.music.load("100DayOfCodePython\Day-14\static\longbreak.mp3")
+        pygame.mixer.music.play(loops=0)
         # time.sleep(3)
         label1.config(text="Long Break!!!", fg=RED, font=(FONT_NAME, 25, "bold"))
         count_down(long_break_secs)
@@ -42,10 +47,14 @@ def start_Timer():
         checks = ""
         check_marks.config(text=checks)
     elif reps % 2 == 0:
+        pygame.mixer.music.load("100DayOfCodePython\Day-14\static\shortbreak.mp3")
+        pygame.mixer.music.play(loops=0)
         # time.sleep(3)
         label1.config(text="Break!!!", fg=PINK, font=(FONT_NAME, 25, "bold"))
         count_down(short_break_secs)
     else:
+        pygame.mixer.music.load("100DayOfCodePython\Day-14\static\work.mp3")
+        pygame.mixer.music.play(loops=0)
         label1.config(text="Work!!!", fg=GREEN, font=(FONT_NAME, 25, "bold"))
         count_down(work_secs)
 
