@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import pandas
 import random
+import json
 
 
 # -----------------------------------------Random Password Generation------------------------------------------#
@@ -35,14 +36,27 @@ def save_data():
     username = emailEntry.get()
     password = passwordEntry.get()
 
+    new_data = {
+        website: {
+            "username": username,
+            "password": password
+        }
+    }
+
     if len(website) == 0 or len(username) == 0 or len(password) == 0:
         messagebox.showerror(title="Empty Fields", message="Fields are still empty")
     else:
         is_ok = messagebox.askokcancel(title=website, message=f"These are the details:\nEmail: {username} "
                                                       f"\nPassword: {password} \nIs it ok to save??")
         if is_ok:
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{website} | {username} | {password}\n")
+            with open("100DayOfCodePython\Day-15\data.json", "r") as data_file:
+                try:
+                    data = json.load(data_file)
+                except json.decoder.JSONDecodeError:
+                    data = {}
+                data.update(new_data)
+            with open("100DayOfCodePython\Day-15\data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
             webEntry.delete(0, END)
             emailEntry.delete(0, END)
             passwordEntry.delete(0, END)
