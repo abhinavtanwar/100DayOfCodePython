@@ -61,6 +61,27 @@ def save_data():
             emailEntry.delete(0, END)
             passwordEntry.delete(0, END)
 
+# --------------------------------------Search Function---------------------------------------#
+def search_data():
+    website = webEntry.get().lower()
+    with open("100DayOfCodePython\Day-15\data.json", "r") as file:
+        try:
+            data = json.load(file)
+        except json.decoder.JSONDecodeError:
+            data = {}
+        print(data)
+    try:
+        req_email = data[website]["username"]
+        req_pass = data[website]["password"]
+    except KeyError:
+        messagebox.showerror(title="Not Found", message="No credentials found for inputted website")
+    except FileNotFoundError:
+        messagebox.showerror(title="File not found", message="no database detected")
+    else:
+        messagebox.showinfo(title=f"{website} Credentials", message=f"Username/Email: {req_email}\nPassword: {req_pass}")
+        print(req_email, req_pass)
+    pass
+
 # --------------------------------------UI SETUP----------------------------------------------#
 window = Tk()
 window.title("Password Manager")
@@ -104,5 +125,8 @@ generateButton.grid(row=4, column=3)
 addButton = Button(text="ADD Entry", command=save_data)
 addButton.config(width=40)
 addButton.grid(row=5, column=1, columnspan=4)
+
+searchButton = Button(text="Search", command=search_data)
+searchButton.grid(row=2, column=3)
 
 window.mainloop()
